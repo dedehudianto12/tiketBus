@@ -1,7 +1,6 @@
 "use strict"
 
 function errorHandler(err, req, res, next){
-    console.log(err.name)
     if (err.name === 'ValidationError'){
         const indexErr = err.message.indexOf(":")
         const nextErr = err.message.slice(indexErr+1).split(",")

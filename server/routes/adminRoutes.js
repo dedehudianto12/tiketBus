@@ -12,6 +12,7 @@ router.post("/login", AdminController.login)
 router.use(authenticateAdmin)
 
 router.post("/createBus", BusController.create)
+router.get("/pending", AdminController.findPending)
 
 module.exports = router
 

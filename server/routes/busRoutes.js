@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 
 const BusController = require("../controllers/busController")
+const UserController = require("../controllers/userController")
 const {authenticateUser, authorizeBus} = require("../middlewares/auth")
 
 
@@ -12,6 +13,7 @@ router.get("/", BusController.find)
 
 router.use("/:id", authorizeBus)
 router.get("/:id", BusController.findByPk)
+router.post("/:id/pending", UserController.addPending)
 
 module.exports = router
 

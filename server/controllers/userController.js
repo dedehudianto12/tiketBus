@@ -1,6 +1,7 @@
 "use strict"
 
 const User = require("../models/user")
+const Pending = require("../models/pending")
 const {checkPassword} = require("../helpers/bcrypt")
 const {generateToken} = require("../helpers/token")
 
@@ -67,6 +68,23 @@ class UserController{
                 }
             })
             
+    }
+
+    static addPending(req, res, next){
+        const pendingObj = {
+            userId : req.user,
+            busId : req.bus,
+            bangku : req.body.bangku
+        }
+        Pending.create(pendingObj)
+            .then((pending)=>{
+                res.status(200).json({
+                    status : "Success",
+                    message : "Succesfully get to pending area",
+                    payload : pending
+                })
+            })
+            .catch(next)
     }
 }
 

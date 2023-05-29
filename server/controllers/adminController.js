@@ -1,6 +1,7 @@
 "use strict"
 
 const Admin = require("../models/admin")
+const Pending = require("../models/pending")
 const {checkPassword} = require("../helpers/bcrypt")
 const {generateToken} = require("../helpers/token")
 
@@ -64,6 +65,22 @@ class AdminController{
                 }
             })
             
+    }
+
+    static findPending(req, res, next){
+        Pending.find()
+            .then((pending)=>{
+                res.status(200).json({
+                    status : "Success",
+                    message : "Succesfully get all pending",
+                    payload : pending
+                })
+            })
+            .catch(next)
+    }
+
+    static updatePending(req, res, next){
+        
     }
 }
 

@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
             validator: function(value){
                 return User.findOne({username : value})
                     .then((user)=>{
-                        console.log(user)
                         if(user){
                             return false
                         }else{
@@ -33,7 +32,6 @@ const userSchema = new mongoose.Schema({
                 if (value == "perempuan" || value == "laki-laki"){
                     return true
                 }else{
-                    console.log(masuk)
                     return false
                 }
             }, message : "Jenis Kelamin harus sesuai"

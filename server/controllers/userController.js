@@ -14,7 +14,7 @@ class UserController{
             nama : req.body.nama,
             email : req.body.email
         }
-        // console.log(userObj)
+
         User.create(userObj)
             .then((user)=>{
                 let token = generateToken(user)
@@ -28,6 +28,10 @@ class UserController{
             .catch(err=>{
                 next(err)
             })
+    }
+
+    static login(req, res, next){
+
     }
 }
 

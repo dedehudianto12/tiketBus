@@ -54,6 +54,7 @@ class AdminController{
                             message : "Wrong email/password"
                         })
                     }else{
+                        console.log(generateToken(data))
                         res.status(200).json({
                             status : 200,
                             message : "Success Login Admin",

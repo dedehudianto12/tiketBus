@@ -7,7 +7,11 @@ function generateToken(user){
 }
 
 function checkToken(userToken){
-    return token.verify(userToken, process.env.JWT_SECRET )
+    if (!userToken){
+        return false
+    }else{
+        return token.verify(userToken, process.env.JWT_SECRET )
+    }
 }
 
 module.exports ={

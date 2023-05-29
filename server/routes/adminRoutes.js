@@ -11,7 +11,7 @@ router.post("/login", AdminController.login)
 
 router.use(authenticateAdmin)
 
-router.post("/create", BusController.create)
+router.post("/createBus", BusController.create)
 
 module.exports = router
 

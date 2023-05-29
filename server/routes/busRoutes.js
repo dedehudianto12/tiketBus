@@ -4,11 +4,14 @@ const express = require('express')
 const router = express.Router()
 
 const BusController = require("../controllers/busController")
-const {authenticateAdmin} = require("../middlewares/auth")
+const {authenticateUser, authorizeBus} = require("../middlewares/auth")
 
 
-router.use(authenticateAdmin)
-router.post("/", BusController.create)
+router.use(authenticateUser)
+router.get("/", BusController.find)
+
+router.use("/:id", authorizeBus)
+router.get("/:id", BusController.findByPk)
 
 module.exports = router
 

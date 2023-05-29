@@ -41,7 +41,11 @@ const busSchema = new mongoose.Schema({
     bangku : [{
         nomor : String,
         user : String
-    }]
+    }],
+    harga : {
+        type : Number,
+        required : [true, "Harga is required"]
+    }
 })
 
 const Bus = mongoose.model("Bus", busSchema)

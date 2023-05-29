@@ -6,7 +6,8 @@ class BusController{
     static create(req, res, next){
 
         const arrBangku = []
-        for (let i = 0; i < req.body.jumlahBgku+1; i++){
+        const jumlahBangku = req.body.jumlahBgku
+        for (let i = 0; i < jumlahBangku; i++){
             let temp = {
                 nomor : i+1,
                 user : "none"
@@ -20,7 +21,8 @@ class BusController{
             wktBrgkt : req.body.wktBrgkt,
             wktTiba : req.body.wktTiba,
             jumlahBgku : req.body.jumlahBgku,
-            bangku : arrBangku
+            bangku : arrBangku,
+            harga : req.body.harga
         }
 
         Bus.create(busObj)
@@ -29,6 +31,30 @@ class BusController{
                     status : "Success",
                     message : "Sucess adding Bus",
                     payload : data
+                })
+            })
+            .catch(next)
+    }
+
+    static find(req, res, next){
+        Bus.find()
+            .then((bus)=>{
+                res.status(200).json({
+                    status : "Success",
+                    message : "Succesfully get all buses",
+                    payload : bus
+                })
+            })
+            .catch(next)
+    }
+
+    static findByPk(req, res, next){
+        Bus.findById(req.params.id)
+            .then((bus)=>{
+                res.status(200).json({
+                    status : "Success",
+                    message : "Succesfully find a bus",
+                    payload : bus
                 })
             })
             .catch(next)

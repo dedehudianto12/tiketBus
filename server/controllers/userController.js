@@ -14,11 +14,11 @@ class UserController{
             nama : req.body.nama,
             email : req.body.email
         }
-        console.log(userObj)
+        // console.log(userObj)
         User.create(userObj)
             .then((user)=>{
-                console.log(token)
                 let token = generateToken(user)
+                console.log(token)
                 res.status(201).json({
                     status: 'Success',
                     message: 'Success Register User',
@@ -26,7 +26,7 @@ class UserController{
                 })
             })
             .catch(err=>{
-                console.log(err)
+                next(err)
             })
     }
 }

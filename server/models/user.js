@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
             validator: function(value){
                 return User.findOne({username : value})
                     .then((user)=>{
+                        console.log(user)
                         if(user){
                             return false
                         }else{

@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         required : [true, "username is required"],
         validate : {
             validator: function(value){
-                return userSchema.findOne({username : value})
+                return User.findOne({username : value})
                     .then((user)=>{
                         if(user){
                             return false
@@ -29,10 +29,10 @@ const userSchema = new mongoose.Schema({
         required : [true, "Jenis Kelamin is required"],
         validate : {
             validator : function(value){
-                if (value != "perempulan" || "laki-laki"){
-                    return false
-                }else{
+                if (value == "perempuan" || value == "laki-laki"){
                     return true
+                }else{
+                    return false
                 }
             }, message : "Jenis Kelamin harus sesuai"
         }
@@ -43,7 +43,24 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : [true, "Nama is required"],
         minlength : [6, "Minimum character is 6"]
-    }
+    },email: {
+        type: String,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email format is invalid'],
+        validate: {
+            validator: function (value) {
+                return User.findOne({ email: value })
+                    .then((user) => {
+                        if (user) {
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
+            },
+            message: 'Email already used'
+        },
+        required: [true, 'Email is required']
+    },
 })
 
 userSchema.pre("save", function(){
@@ -53,3 +70,5 @@ userSchema.pre("save", function(){
 })
 
 const User = mongoose.model("User", userSchema)
+
+module.exports = User

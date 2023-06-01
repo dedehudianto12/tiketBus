@@ -6,16 +6,23 @@ const mongoose = require("mongoose")
 const pendingSchema = new mongoose.Schema({
     userId : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : "User"
+        ref : "User",
+        required : [true, "userId is required"],
     },
     busId : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : "Bus"
+        ref : "Bus",
+        required : [true, "busId is required"],
+
     },
     bangku : {
         type : Number,
         required : [true, "Nomor bangku is required"],
 
+    },
+    status : {
+        type : Boolean,
+        required : [true, "status is required"]
     }
 })
 

@@ -1,6 +1,7 @@
 "use strict"
 
 const Admin = require("../models/admin")
+const Bus = require("../models/bus")
 const Pending = require("../models/pending")
 const {checkPassword} = require("../helpers/bcrypt")
 const {generateToken} = require("../helpers/token")
@@ -80,7 +81,22 @@ class AdminController{
     }
 
     static updatePending(req, res, next){
-        
+        Pending.findByIdAndUpdate(req.pending, {status : true}, {new : true})
+            .then((pending)=>{
+                if(!pending){
+                    next({
+                        status : 404,
+                        message : "Pending not found"
+                    })
+                }else{
+                    res.status(200).json({
+                        status : "Success",
+                        message : "Successfully Update Pending",
+                        payload : pending
+                    })
+                }
+            })
+            .catch(next)
     }
 }
 

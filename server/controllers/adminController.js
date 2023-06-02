@@ -89,10 +89,36 @@ class AdminController{
                         message : "Pending not found"
                     })
                 }else{
+                    return Bus.findById(pending.busId)
+                }
+            })
+            .then((bus)=>{
+                if(!bus){
+                    next({
+                        status : 404,
+                        message : "Bus not found"
+                    })
+                }else{
+                    let oldBangku = bus.bangku
+                    let newBangku = {
+                        nomor: req.pending.bangku,
+                        user: req.pending.userId
+                    }
+                    oldBangku[req.pending.bangku+1] = newBangku
+                    return Bus.findByIdAndUpdate(bus._id, {bangku: oldBangku}, {new : true})
+                }
+            })
+            .then((newBus)=>{
+                if(!newBus){
+                    next({
+                        status : 404,
+                        message : "Bus not found"
+                    })
+                }else{
                     res.status(200).json({
                         status : "Success",
-                        message : "Successfully Update Pending",
-                        payload : pending
+                        message : "Succesfully update pending and bus",
+                        payload : newBus
                     })
                 }
             })

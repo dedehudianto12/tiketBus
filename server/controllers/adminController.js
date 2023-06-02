@@ -1,6 +1,7 @@
 "use strict"
 
 const Admin = require("../models/admin")
+const Bus = require("../models/bus")
 const Pending = require("../models/pending")
 const {checkPassword} = require("../helpers/bcrypt")
 const {generateToken} = require("../helpers/token")
@@ -80,7 +81,48 @@ class AdminController{
     }
 
     static updatePending(req, res, next){
-        
+        Pending.findByIdAndUpdate(req.pending, {status : true}, {new : true})
+            .then((pending)=>{
+                if(!pending){
+                    next({
+                        status : 404,
+                        message : "Pending not found"
+                    })
+                }else{
+                    return Bus.findById(pending.busId)
+                }
+            })
+            .then((bus)=>{
+                if(!bus){
+                    next({
+                        status : 404,
+                        message : "Bus not found"
+                    })
+                }else{
+                    let oldBangku = bus.bangku
+                    let newBangku = {
+                        nomor: req.pending.bangku,
+                        user: req.pending.userId
+                    }
+                    oldBangku[req.pending.bangku+1] = newBangku
+                    return Bus.findByIdAndUpdate(bus._id, {bangku: oldBangku}, {new : true})
+                }
+            })
+            .then((newBus)=>{
+                if(!newBus){
+                    next({
+                        status : 404,
+                        message : "Bus not found"
+                    })
+                }else{
+                    res.status(200).json({
+                        status : "Success",
+                        message : "Succesfully update pending and bus",
+                        payload : newBus
+                    })
+                }
+            })
+            .catch(next)
     }
 }
 

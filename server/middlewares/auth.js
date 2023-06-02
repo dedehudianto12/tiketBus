@@ -3,6 +3,7 @@
 const Admin = require("../models/admin")
 const User = require("../models/user")
 const Bus = require("../models/bus")
+const Pending = require("../models/pending")
 const {checkToken} = require("../helpers/token")
 
 function authenticateAdmin(req, res, next){
@@ -59,8 +60,24 @@ function authorizeBus(req, res, next){
         })
 }
 
+function authorizePending(req, res, next){
+    Pending.findById(req.params.id)
+        .then((pending)=>{
+            if(!pending){
+                next({
+                    status : 404,
+                    message : "Pending not found"
+                })
+            }else{
+                req.pending = pending
+                next()
+            }
+        })
+}
+
 module.exports = {
     authenticateAdmin,
     authenticateUser,
-    authorizeBus
+    authorizeBus,
+    authorizePending
 }

@@ -74,7 +74,8 @@ class UserController{
         const pendingObj = {
             userId : req.user,
             busId : req.bus,
-            bangku : req.body.bangku
+            bangku : req.body.bangku,
+            status : false
         }
         Pending.create(pendingObj)
             .then((pending)=>{

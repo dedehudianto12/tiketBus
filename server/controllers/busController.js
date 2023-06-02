@@ -51,6 +51,7 @@ class BusController{
     static findByPk(req, res, next){
         Bus.findById(req.params.id)
             .then((bus)=>{
+                console.log(bus.bangku)
                 res.status(200).json({
                     status : "Success",
                     message : "Succesfully find a bus",

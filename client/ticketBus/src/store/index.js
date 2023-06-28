@@ -9,9 +9,13 @@ const tempurl = "http://localhost:3000"
 
 const store = createStore({
     state :{
-        islogin : true
+        isLogin : true
     },
-    mutations : {},
+    mutations : {
+        ADD_LOGIN(state, payload){
+            state.isLogin = payload
+        }
+    },
     actions : {
         login({commit, state, dispatch}, payload){
             axios({
@@ -36,7 +40,8 @@ const store = createStore({
                         text: err.response.data.message,
                     })
                 })
-        }
+        },
+       
     },
     getters : {}
 })

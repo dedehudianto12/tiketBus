@@ -54,6 +54,7 @@ class UserController{
                     })
                 }else{
                     if(!checkPassword(req.body.password, data.password)){
+                        console.log("hehe")
                         next({
                             status : 404,
                             message : "Wrong email/password"

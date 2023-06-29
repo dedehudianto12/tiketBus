@@ -99,14 +99,14 @@
             type="submit"
             @click.prevent="registerForm"
           >
-            Sign In
+            Register
           </button>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             @click="changeRegister"
           >
-            Sign Up
+            Login
           </button>
         </div>
       </form>
@@ -130,12 +130,12 @@ export default {
       const obj = {
         username: this.username,
         nama: this.nama,
-        kelamin: this.kelamin,
+        jenisKelamin: this.kelamin,
         ttl: this.ttl,
         email: this.email,
         password: this.password
       }
-      console.log(obj)
+      this.$store.dispatch('register', obj)
     },
     changeRegister() {
       this.$store.commit('ADD_LOGIN', true)

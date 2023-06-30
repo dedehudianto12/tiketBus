@@ -10,7 +10,8 @@ const tempurl = "http://localhost:3000"
 const store = createStore({
     state :{
         isLogin : true,
-        busses : []
+        busses : [],
+        bus : []
     },
     mutations : {
         ADD_LOGIN(state, payload){
@@ -18,6 +19,9 @@ const store = createStore({
         },
         SET_BUSSES(state, payload){
             state.busses = payload
+        },
+        SET_BUS(state, payload){
+            state.bus = payload
         }
     },
     actions : {
@@ -84,6 +88,29 @@ const store = createStore({
                     title: 'Oops...',
                     text: err.response.data.message,
                 })
+            })
+        }, getBus({commit, state, dispatch}, payload){
+            axios({
+                method : "GET",
+                url : `${tempurl}/bus/${payload}`,
+                headers : {token : localStorage.getItem("token")}
+            })
+            .then(({data})=>{
+                console.log(data)
+                commit("SET_BUS", data.payload)
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+        }, addPendingBus({commit, state, dispatch}, payload){
+            axios({
+                method : "post",
+                url: `${tempurl}/bus/${payload}/pending`,
+                data : payload
             })
         }
        

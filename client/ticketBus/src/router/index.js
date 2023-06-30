@@ -23,6 +23,11 @@ const router = createRouter({
         }
       },
       component: () => import('../views/Bus.vue')
+    },
+    {
+      path : "/:id",
+      name : "BusDetail",
+      component : () => import('../views/DetailBus.vue')
     }
   ]
 })

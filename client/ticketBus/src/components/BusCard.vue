@@ -53,7 +53,9 @@ export default {
       const newWaktu = moment(oldWaktu).format('Do MMM YYYY, h:mm a')
       return newWaktu
     },
-    busDetail
+    busDetail(value) {
+      this.$router.push({ path: `/${value}` })
+    }
   }
 }
 </script>

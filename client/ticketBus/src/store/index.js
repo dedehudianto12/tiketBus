@@ -11,7 +11,8 @@ const store = createStore({
     state :{
         isLogin : true,
         busses : [],
-        bus : []
+        bus : [],
+        pendings : []
     },
     mutations : {
         ADD_LOGIN(state, payload){
@@ -22,9 +23,36 @@ const store = createStore({
         },
         SET_BUS(state, payload){
             state.bus = payload
+        },
+        SET_PENDING(state, payload){
+            state.pendings = payload
         }
     },
     actions : {
+        loginAdmin({commit, state, dispatch}, payload){
+            axios({
+                method : "post",
+                url : `${tempurl}/admins/login`,
+                data: payload
+            })
+            .then(({data})=>{
+                localStorage.setItem('admin_token', data.payload)
+                router.push("/admin/bus")
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+        },
         login({commit, state, dispatch}, payload){
             axios({
                 method : "post",
@@ -79,7 +107,6 @@ const store = createStore({
                 headers : {token : localStorage.getItem("token")}
             })
             .then(({data})=>{
-                console.log(data)
                 commit("SET_BUSSES", data.payload)
             })
             .catch(err=>{
@@ -109,11 +136,98 @@ const store = createStore({
         }, addPendingBus({commit, state, dispatch}, payload){
             axios({
                 method : "post",
-                url: `${tempurl}/bus/${payload}/pending`,
-                data : payload
+                url: `${tempurl}/bus/${payload[0]}/pending`,
+                data : {bangku: payload[1]},
+                headers : {token: localStorage.getItem("token")}
             })
-        }
-       
+            .then(({data})=>{
+                console.log(data)
+                commit("SET_PENDING", data.payload)
+                router.push("/dashboard")
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }).catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+        },
+         addBus({commit, state, dispatch}, payload){
+            axios({
+                method : "post",
+                url: `${tempurl}/admins/createBus`,
+                data : payload,
+                headers : {token: localStorage.getItem("admin_token")}
+            })
+            .then(({data})=>{
+                let temp = state.busses
+                temp.push(data.payload)
+                console.log(temp)
+                commit("SET_BUSSES", temp)
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }).catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+         },
+         deleteBus({commit, state, dispatch}, payload){
+            axios({
+                method : "delete",
+                url: `${tempurl}/admins/${payload}`,
+                data : payload,
+                headers : {token: localStorage.getItem("admin_token")}
+            })
+            .then(({data})=>{
+                let temp = state.busses.filter(el => {
+                    return el._id !== payload
+                  })
+                commit("SET_BUSSES", temp)
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+         },
+         updateBus({commit, state,dispatch}, payload){
+            axios({
+                method : "patch",
+                url: `${tempurl}/admins/${payload}`,
+                data : payload,
+                headers : {token: localStorage.getItem("admin_token")}
+            })
+            .then(({data})=>{
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+         }
     },
     getters : {}
 })

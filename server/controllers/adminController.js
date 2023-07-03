@@ -124,6 +124,47 @@ class AdminController{
             })
             .catch(next)
     }
+    static delete(req, res, next){
+        Bus.findByIdAndDelete(req.params.id)
+        .then((bus)=>{
+            res.status(200).json({
+                status : "Success",
+                message : "Succesfully find a bus",
+                payload : bus
+            })
+        })
+        .catch(next)
+    }
+
+    static update(req, res, next){
+        const arrBangku = []
+        const jumlahBangku = req.body.jumlahBgku
+        for (let i = 0; i < jumlahBangku; i++){
+            let temp = {
+                nomor : i+1,
+                user : "none"
+            }
+            arrBangku.push(temp)
+        }
+        const busObj = {
+            nomor : req.body.nomor,
+            tujuan : req.body.tujuan,
+            wktBrgkt : req.body.wktBrgkt,
+            wktTiba : req.body.wktTiba,
+            jumlahBgku : req.body.jumlahBgku,
+            bangku : arrBangku,
+            harga : req.body.harga
+        }
+        Bus.findByIdAndUpdate(req.params.id, busObj, {new : true})
+        .then((bus)=>{
+            res.status(200).json({
+                status : "Success",
+                message : "Succesfully find a bus",
+                payload : bus
+            })
+        })
+        .catch(next)
+    }
 }
 
 module.exports = AdminController

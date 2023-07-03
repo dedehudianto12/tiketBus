@@ -12,6 +12,8 @@ router.post("/login", AdminController.login)
 router.use(authenticateAdmin)
 
 router.post("/createBus", BusController.create)
+router.delete("/:id", AdminController.delete)
+router.patch("/:id", AdminController.update)
 router.get("/pending", AdminController.findPending)
 
 router.use("/pending/:id", authorizePending)

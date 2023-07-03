@@ -28,6 +28,26 @@ const router = createRouter({
       path : "/:id",
       name : "BusDetail",
       component : () => import('../views/DetailBus.vue')
+    },
+    {
+      path : "/admin",
+      name : "admin",
+      component : () => import("../views/AdminView.vue")
+    },
+    {
+      path : "/admin/bus",
+      name  : "adminBus",
+      beforeEnter: (to, from, next)=>{
+        const valid = localStorage.getItem("admin_token")
+        if (valid){
+          next()
+        }else{
+          next({
+            name : 'home'
+          })
+        }
+      },
+      component : () => import("../views/Admin.vue")
     }
   ]
 })

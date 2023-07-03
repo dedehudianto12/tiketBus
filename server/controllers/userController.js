@@ -44,7 +44,6 @@ class UserController{
                 message : `${checkNull.join(",")}`
             })
         }
-
         User.findOne({email: req.body.email})
             .then((data)=>{
                 if(!data){

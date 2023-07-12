@@ -141,7 +141,6 @@ const store = createStore({
                 headers : {token: localStorage.getItem("token")}
             })
             .then(({data})=>{
-                console.log(data)
                 commit("SET_PENDING", data.payload)
                 router.push("/dashboard")
                 Swal.fire({
@@ -168,7 +167,6 @@ const store = createStore({
             .then(({data})=>{
                 let temp = state.busses
                 temp.push(data.payload)
-                console.log(temp)
                 commit("SET_BUSSES", temp)
                 Swal.fire({
                     icon: 'success',
@@ -208,11 +206,34 @@ const store = createStore({
          updateBus({commit, state,dispatch}, payload){
             axios({
                 method : "patch",
-                url: `${tempurl}/admins/${payload}`,
-                data : payload,
+                url: `${tempurl}/admins/${payload[1]}`,
+                data : payload[0],
                 headers : {token: localStorage.getItem("admin_token")}
             })
             .then(({data})=>{
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
+         },
+         getPendings({commit, state,dispatch}, payload){
+            axios({
+                method : "get",
+                url: `${tempurl}/admins/pending`,
+                headers : {token: localStorage.getItem("admin_token")}
+            })
+            .then(({data})=>{
+                commit("SET_PENDING", data.payload)
                 Swal.fire({
                     icon: 'success',
                     title: data.message,

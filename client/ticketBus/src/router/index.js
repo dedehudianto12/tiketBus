@@ -48,6 +48,36 @@ const router = createRouter({
         }
       },
       component : () => import("../views/Admin.vue")
+    },
+    {
+      path : "/admin/bus/:id",
+      name  : "adminBusId",
+      beforeEnter: (to, from, next)=>{
+        const valid = localStorage.getItem("admin_token")
+        if (valid){
+          next()
+        }else{
+          next({
+            name : 'admin'
+          })
+        }
+      },
+      component : () => import("../views/AdminUpdate.vue")
+    },
+    {
+      path : "/admin/pending",
+      name  : "adminPending",
+      beforeEnter: (to, from, next)=>{
+        const valid = localStorage.getItem("admin_token")
+        if (valid){
+          next()
+        }else{
+          next({
+            name : 'admin'
+          })
+        }
+      },
+      component : () => import("../views/AdminPending.vue")
     }
   ]
 })

@@ -8,6 +8,7 @@ const app = express()
 const port = 3000
 const mongoose = require("mongoose")
 const routes = require("./routes/index")
+const errorHandler = require("./middlewares/errorHandler")
 
 app.use(cors())
 app.use(express.json())
@@ -25,6 +26,7 @@ mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, 
     })
 
 app.use("/", routes)
+app.use(errorHandler)
 
 
 app.listen(port, ()=> console.log(`Example app listening on port ${port}!`))

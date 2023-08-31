@@ -38,10 +38,6 @@ const busSchema = new mongoose.Schema({
         type : Number,
         required : [true, "Jumlah bangku is required"],
     },
-    bangku : [{
-        nomor : String,
-        user : String
-    }],
     harga : {
         type : Number,
         required : [true, "Harga is required"]

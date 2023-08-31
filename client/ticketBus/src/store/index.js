@@ -248,6 +248,27 @@ const store = createStore({
                     text: err.response.data.message,
                 })
             })
+         }, updatePending({commit, state, dispatch}, payload){
+            axios({
+                method : "patch",
+                url: `${tempurl}/admins/pending/${payload}`,
+                headers : {token: localStorage.getItem("admin_token")}
+            })
+            .then(({data})=>{
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                })
+            })
          }
     },
     getters : {}

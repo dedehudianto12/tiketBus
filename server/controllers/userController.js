@@ -70,14 +70,38 @@ class UserController{
             
     }
 
+    static deletePending(req, res, next){
+        Pending.findByIdAndDelete(req.params.id)
+        .then(()=>{
+            res.status(200).json({
+                status : 200,
+                message : "Delete Pending Success",
+            })
+        })
+        .catch(err=>{
+            next(err)
+        })
+    }
+
     static addPending(req, res, next){
         const pendingObj = {
             userId : req.user,
             busId : req.bus,
-            bangku : req.body.bangku,
+            bangkuId : req.body.bangkuId,
             status : false
         }
-        Pending.create(pendingObj)
+
+        Pending.findOne({bangkuId: req.body.bangkuId})
+            .then((pending)=>{
+                if (pending){
+                    res.status(404).json({
+                        status : "Error",
+                        message : "Bangku ini sudah ada yang booking"
+                    })
+                }else{
+                    return Pending.create(pendingObj)
+                }
+            })
             .then((pending)=>{
                 res.status(200).json({
                     status : "Success",

@@ -3,6 +3,7 @@
 const Admin = require("../models/admin")
 const Bus = require("../models/bus")
 const Pending = require("../models/pending")
+const Bangku = require("../models/bangku")
 const {checkPassword} = require("../helpers/bcrypt")
 const {generateToken} = require("../helpers/token")
 
@@ -89,27 +90,11 @@ class AdminController{
                         message : "Pending not found"
                     })
                 }else{
-                    return Bus.findById(pending.busId)
+                    return Bangku.findByIdAndUpdate(pending.bangkuId, {userId: pending.userId}, {new: true})
                 }
             })
-            .then((bus)=>{
-                if(!bus){
-                    next({
-                        status : 404,
-                        message : "Bus not found"
-                    })
-                }else{
-                    let oldBangku = bus.bangku
-                    let newBangku = {
-                        nomor: req.pending.bangku,
-                        user: req.pending.userId
-                    }
-                    oldBangku[req.pending.bangku+1] = newBangku
-                    return Bus.findByIdAndUpdate(bus._id, {bangku: oldBangku}, {new : true})
-                }
-            })
-            .then((newBus)=>{
-                if(!newBus){
+            .then((bangku)=>{
+                if(!bangku){
                     next({
                         status : 404,
                         message : "Bus not found"
@@ -117,8 +102,7 @@ class AdminController{
                 }else{
                     res.status(200).json({
                         status : "Success",
-                        message : "Succesfully update pending and bus",
-                        payload : newBus
+                        message : "Success Update Pending and Bangku"
                     })
                 }
             })
@@ -129,7 +113,7 @@ class AdminController{
         .then((bus)=>{
             res.status(200).json({
                 status : "Success",
-                message : "Succesfully find a bus",
+                message : "Succesfully delete a bus",
                 payload : bus
             })
         })
@@ -159,11 +143,24 @@ class AdminController{
         .then((bus)=>{
             res.status(200).json({
                 status : "Success",
-                message : "Succesfully find a bus",
+                message : "Succesfully update a bus",
                 payload : bus
             })
         })
         .catch(next)
+    }
+
+    static deletePending(req, res, next){
+        Pending.findByIdAndDelete(req.params.id)
+            .then(()=>{
+                res.status(200).json({
+                    status : 200,
+                    message : "Delete Pending Success",
+                })
+            })
+            .catch(err=>{
+                next(err)
+            })
     }
 }
 

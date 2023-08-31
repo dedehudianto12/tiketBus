@@ -23,6 +23,12 @@
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                   >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
                     NoBangku
                   </th>
                   <th
@@ -51,10 +57,17 @@
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm text-black-800 dark:text-black-200"
                   >
+                    {{ pending.status }}
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-black-800 dark:text-black-200"
+                  >
                     {{ pending.bangku }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-blue-500 hover:text-blue-700" href="#">Update</a>
+                  <td v-if="pending.status !== true" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button @click="updatePending(pending._id)" type="button" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                      Update
+                    </button>                  
                   </td>
                 </tr>
               </tbody>
@@ -67,6 +80,7 @@
 </template>
 
 <script>
+
 export default {
   created() {
     this.$store.dispatch('getPendings')
@@ -74,6 +88,11 @@ export default {
   computed: {
     pendings() {
       return this.$store.state.pendings
+    }
+  },
+  methods: {
+    updatePending(value){
+      this.$store.dispatch("updatePending", value)
     }
   }
 }

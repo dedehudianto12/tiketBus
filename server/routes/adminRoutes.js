@@ -19,6 +19,7 @@ router.get("/pending", AdminController.findPending)
 router.use("/pending/:id", authorizePending)
 
 router.patch("/pending/:id", AdminController.updatePending)
+router.delete("/pending/:id", AdminController.deletePending)
 
 
 

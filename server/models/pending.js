@@ -13,12 +13,11 @@ const pendingSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "Bus",
         required : [true, "busId is required"],
-
     },
-    bangku : {
-        type : Number,
+    bangkuId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Bangku",
         required : [true, "Nomor bangku is required"],
-
     },
     status : {
         type : Boolean,
